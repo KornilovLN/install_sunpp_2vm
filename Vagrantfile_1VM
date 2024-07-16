@@ -1,0 +1,59 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# Usage:
+# vagrant up on_ubuntu
+
+Vagrant.require_version ">= 1.7.0"
+
+Vagrant.configure("2") do |config|
+
+  config.vm.define "on_ubuntu", autostart: true do |on_debian|  
+  
+        on_debian.vm.box = "ubuntu/bionic64"
+
+        #on_debian.vm.network "private_network", ip: "172.16.0.8"
+        on_debian.vm.network "private_network", ip: "192.168.56.10"
+
+        on_debian.vm.hostname = "sunpp"
+
+        on_debian.vm.provider :virtualbox do |vb|
+           vb.name = "sunpp"
+           vb.memory = 9096
+           vb.cpus = 4
+        end
+
+        on_debian.vm.provision "shell", privileged: false, inline: <<-SHELL
+                echo 'vagrant:vagrant' | sudo chpasswd
+        SHELL
+
+        on_debian.vm.provision "shell", privileged: false, inline: <<-SHELL
+          # Обновление списка пакетов
+          sudo apt-get update
+
+          # Установка curl и python3
+          # sudo apt-get install -y curl python3 python-is-python3
+
+          # Установка curl и python3
+          sudo apt-get install -y curl python3
+
+          # Создание символической ссылки python на python3
+          sudo ln -s /usr/bin/python3 /usr/bin/python
+
+          # Добавление записи в /etc/hosts
+          #bash -c "echo '172.16.0.1 sdn.dc.cns.atom registry.dc.cns.atom' >> /etc/hosts"
+          # Добавление записи в /etc/hosts
+          sudo bash -c "echo '172.16.0.1 sdn.dc.cns.atom registry.dc.cns.atom' >> /etc/hosts"
+
+          # Проверка DNS и сети
+          if ! ping -c 1 google.com &> /dev/null; then
+            echo "Ошибка: нет доступа к интернету или проблемы с DNS"
+            exit 1
+          fi  
+
+          # Выполнение скрипта net-install.sh
+          bash -c "cd /vagrant/; ./net-install.sh setup"
+        SHELL
+  end
+
+end
