@@ -1,0 +1,1 @@
+{"virtualbox":{"/vagrant/shared_folder":{"guestpath":"/vagrant/shared_folder","hostpath":"/mnt/poligon/install_sunpp_2vm/shared_folder","disabled":false,"__vagrantfile":true},"/vagrant":{"guestpath":"/vagrant","hostpath":"/mnt/poligon/install_sunpp_2vm","disabled":false,"__vagrantfile":true}}}

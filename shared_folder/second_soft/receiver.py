@@ -1,4 +1,6 @@
 import socket
+import logging
+import sys
 
 # Создаем сокет
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -32,13 +34,16 @@ while iteration_count < max_iterations:
 
         # Умножаем значение на 10 и выводим в терминал
         result = value * 10
+        print(f'[RECEIVER] Received value: {value}, result: {result}')
 
         log_file.write(f'[RECEIVER] Received value: {value}, result: {result}\n')
         log_file.flush()
 
         # Увеличиваем счетчик итераций
         iteration_count += 1
-
+        
+        print(f"---------------------------------------------\n\n")
+        
         log_file.write("---------------------------------------------\n\n")
         log_file.flush()
 

@@ -1,5 +1,7 @@
 import socket
 import time
+import logging
+import sys
 
 # Создаем сокет
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -14,6 +16,8 @@ sock.listen(1)
 # Счетчик
 cnt = 0
 
+print(f"[SENDER] Script started\n")
+
 # Открываем файл для записи логов
 log_file = open('/vagrant/shared_folder/sender.log', 'a')
 
@@ -22,13 +26,15 @@ log_file.flush()
 
 while True:
     try:
-        # Ждем входящего соединения
+        # Ждем входящего соединения        
+        print("[SENDER] Waiting for a connection...\n")
         log_file.write("[SENDER] Waiting for a connection...\n")
         log_file.flush()
 
         connection, client_address = sock.accept()
 
         try:
+            print(f'[SENDER] Connection from {client_address}\n')
             log_file.write(f'Connection from {client_address}\n')
 
             # Увеличиваем счетчик

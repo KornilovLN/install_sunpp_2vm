@@ -43,7 +43,6 @@ Vagrant.configure("2") do |config|
     firstvm.vm.provision "shell", inline: <<-SHELL
       nohup python3 /script/sender.py > sender.log 2>&1 &
     SHELL
-
   end
 
   #-----------------------------------------------------------------------
@@ -66,7 +65,7 @@ Vagrant.configure("2") do |config|
     secondvm.vm.provision "shell", privileged: false, inline: <<-SHELL
       echo 'vagrant:vagrant' | sudo chpasswd
     SHELL
-
+    
     secondvm.vm.provision "shell", inline: <<-SHELL
       sudo apt-get update
       sudo apt-get install -y curl python3
@@ -84,7 +83,6 @@ Vagrant.configure("2") do |config|
     secondvm.vm.provision "shell", inline: <<-SHELL
       nohup python3 /script/receiver.py > receiver.log 2>&1 &
     SHELL
-
   end
 
 end
